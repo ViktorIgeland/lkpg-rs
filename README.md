@@ -62,3 +62,41 @@ Try queries like:
 - Scraper is heuristic-based to be resilient to small HTML changes.
 - Dates are normalized to ISO (YYYY-MM-DD) when possible. If a date cannot be parsed, the field may be empty.
 
+## Svenska
+
+### Problem & målbild
+
+Bygg en MVP för en pipeline som hämtar nyheter från Linköpings kommun, skapar vektorinbäddningar och gör det sökbara via ett API, så att användare snabbt kan hitta relevanta nyheter utifrån innebörd och inte bara ett nyckelord.
+
+### Kort beskrivning av flödet
+
+- Hämtar nyheter från `https://www.linkoping.se/nyheter/`
+- Rensar och normaliserar text och datum
+- Skapar embeddings med OpenAI
+- Lagrar vektorer i Pinecone
+- Exponerar sök via FastAPI: `/search` tar en text/sökord, embed:ar den och matchar i Pinecone
+
+### Val av verktyg/databas – och varför
+
+- Cursor: snabbt sätt att komma igång och bygga en prototyp
+- BeautifulSoup: enkel, beprövad HTML-parsning för skrapning
+- OpenAI Embeddings: hög kvalitet på API:et och enkelt att använda då jag har tidigare kunskap av det
+- Pinecone (vektordatabas): skalbar och snabb att komma igång med, eftersom det är en vektordatabas kan man enkelt göra "likhetssökning" och hitta relevant info
+- FastAPI + Uvicorn: snabbt och enkelt att bygga ett litet, responsivt API
+
+### Kör-/testinstruktioner
+- Se instruktioner ovan
+
+### Reflektion: nästa steg och skalning
+Just nu är det en väldigt enkel och minimal produkt, men några idéer: 
+- Schemalägg skrapning så att det sker automatiskt med jämna mellanrum, utan behov att göra det manuellt. Även lägga till mer felhantering, t.ex. för att undvika kopior eller om något går fel under skrapning etc.
+- Lägg till filtrering och kategorisering, t.ex. analysera nyheten med chatGPT innan den laddas upp till Pinecone och då märk den med olika kategorier och filter.
+- Mer specific databehandling etc.
+- Bygg ett frontend som gör det enkelt att använda.
+
+Eftersom vi kör Pinecone så skalar det väldigt bra och ju mer artiklar vi får desto bättre och mer relevant information kan man hitta via sökning.
+
+### Vart användes AI?
+- AI användes först för att planera och ta fram en strategi på hur projektet kunde genomföras (chatGPT)
+- Denna planering användes för att skapa en prompt, som sedan gavs till Cursor för att bygga själva MVP:n.
+- Buggfixar och setup av t.ex. databas etc gjordes manuellt.
