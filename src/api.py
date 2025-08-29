@@ -14,7 +14,7 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
-PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "linkoping-news")
+PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "linkoping")
 
 if not OPENAI_API_KEY or not PINECONE_API_KEY:
     raise RuntimeError("OPENAI_API_KEY and PINECONE_API_KEY must be set")
@@ -28,13 +28,14 @@ app = FastAPI(title="Linköpings Kommun News Search")
 
 class SearchRequest(BaseModel):
     query: str
-    top_k: int = 2
+    top_k: int = 1
 
 
 class SearchResult(BaseModel):
     title: str
     date: str
     url: str
+    content: str
     score: float
 
 
@@ -54,6 +55,7 @@ def search(req: SearchRequest) -> List[SearchResult]:
             title=md.get("title", ""),
             date=md.get("date", ""),
             url=md.get("url", ""),
+            content=md.get("content", ""),
             score=float(match.score) if match.score is not None else 0.0,
         ))
     return results
