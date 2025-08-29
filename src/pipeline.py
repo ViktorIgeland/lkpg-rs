@@ -6,7 +6,7 @@ Steps:
 - Visit each detail page to extract content/body
 - Clean text and normalize dates
 - Embed (title + content) with text-embedding-3-small
-- Upsert into Pinecone with metadata (title, date, url)
+- Upsert into Pinecone with metadata (title, date, url, content)
 """
 
 import json
@@ -212,6 +212,7 @@ def upsert_to_pinecone(pc: Pinecone, index_name: str, articles: List[Dict[str, s
                 "title": article["title"],
                 "date": article["date"],
                 "url": article["url"],
+                "content": article["content"],
             },
         })
     # Upsert in a single call (small dataset). For larger sets, batch.
@@ -244,7 +245,7 @@ def main() -> None:
 
     index_name = os.getenv("PINECONE_INDEX_NAME", "linkoping")
     cloud = os.getenv("PINECONE_CLOUD", "aws")
-    region = os.getenv("PINECONE_REGION", "eu-west-1")
+    region = os.getenv("PINECONE_REGION", "us-east-1")
 
     # text-embedding-3-small has 1536 dimensions
     ensure_pinecone_index(pc, index_name=index_name, dimension=1536, cloud=cloud, region=region)
