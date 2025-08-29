@@ -21,7 +21,7 @@ cp .env.example .env
 Edit `.env` and set:
 - `OPENAI_API_KEY`
 - `PINECONE_API_KEY`
-- (optional) `PINECONE_INDEX_NAME` (default: linkoping-news)
+- (optional) `PINECONE_INDEX_NAME` (default: linkoping)
 - (optional) `PINECONE_CLOUD` (default: aws)
 - (optional) `PINECONE_REGION` (default: eu-west-1)
 
@@ -50,12 +50,12 @@ POST to `/search` with a JSON body:
 ```bash
 curl -s -X POST http://127.0.0.1:8000/search \
   -H 'Content-Type: application/json' \
-  -d '{"query": "News about schools"}' | jq
+  -d '{"query": "Skolkort"}' | jq
 ```
 
 Try queries like:
-- "News about schools"
-- "Budget and economy"
+- "Skolkort"
+- "Drottninggatan"
 
 ### Notes
 
