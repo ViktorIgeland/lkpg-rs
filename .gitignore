@@ -60,4 +60,4 @@ uvicorn.log
 # Local overrides
 *.local
 
-
+data/
